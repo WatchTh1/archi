@@ -41,14 +41,17 @@ public class InfluenceConnectionFigure extends AbstractArchimateConnectionFigure
     
     @Override
     protected void setConnectionText() {
-        IInfluenceRelationship rel = (IInfluenceRelationship)getModelConnection().getArchimateRelationship();
-        String text = getModelConnection().getName();
-        if(StringUtils.isSet(rel.getStrength())) {
-            text += " " + rel.getStrength(); //$NON-NLS-1$
-        }
+        super.setConnectionText();
         
-        boolean displayName = getModelConnection().getFeatures().getBoolean(IDiagramModelConnection.FEATURE_NAME_VISIBLE, true);
-        getConnectionLabel().setText(displayName ? text : ""); //$NON-NLS-1$
+        // Show Strength after Name if we don't show it already by means of the text expression
+        if(getModelConnection().getFeatures().getBoolean(IDiagramModelConnection.FEATURE_NAME_VISIBLE, true)) {
+            String text = getConnectionLabel().getText();
+            String strength = ((IInfluenceRelationship)getModelConnection().getArchimateRelationship()).getStrength();
+            if(StringUtils.isSet(strength) && !text.contains(strength)) {
+                text += " " + strength; //$NON-NLS-1$
+                getConnectionLabel().setText(text);
+            }
+        }
     }
     
     @Override
