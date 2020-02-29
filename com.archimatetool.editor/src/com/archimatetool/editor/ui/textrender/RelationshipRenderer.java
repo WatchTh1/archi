@@ -20,6 +20,8 @@ public class RelationshipRenderer implements ITextRenderer {
 
     @Override
     public String render(IArchimateModelObject object, String text) {
+        object = getReferencedObject(object);
+        
         if(object instanceof IInfluenceRelationship) {
             return text.replace(STRENGTH, ((IInfluenceRelationship)object).getStrength());
         }

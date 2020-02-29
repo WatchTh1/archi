@@ -19,6 +19,8 @@ public class DocumentationRenderer implements ITextRenderer {
 
     @Override
     public String render(IArchimateModelObject object, String text) {
+        object = getReferencedObject(object);
+        
         if(object instanceof IDocumentable) {
             return text.replace(DOCUMENTATION, ((IDocumentable)object).getDocumentation());
         }

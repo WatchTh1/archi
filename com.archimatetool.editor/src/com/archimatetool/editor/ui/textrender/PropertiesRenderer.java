@@ -27,6 +27,8 @@ public class PropertiesRenderer implements ITextRenderer {
 
     @Override
     public String render(IArchimateModelObject object, String text) {
+        object = getReferencedObject(object);
+        
         if(object instanceof IProperties) {
             text = renderPropertyValue((IProperties)object, text);
             text = renderPropertiesList((IProperties)object, text);

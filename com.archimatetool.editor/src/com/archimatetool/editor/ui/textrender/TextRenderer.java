@@ -10,7 +10,6 @@ import java.util.Set;
 
 import com.archimatetool.editor.utils.StringUtils;
 import com.archimatetool.model.IArchimateModelObject;
-import com.archimatetool.model.IDiagramModelArchimateComponent;
 
 /**
  * Render Text for display in Text controls in diagrams
@@ -57,11 +56,6 @@ public class TextRenderer {
         
         // Remove escapement of newline chars
         result = renderNewLines(result);
-        
-        // Get the underlying concept if there is one
-        if(object instanceof IDiagramModelArchimateComponent) {
-            object = ((IDiagramModelArchimateComponent)object).getArchimateConcept();
-        }
         
         // Iterate through all registered renderers
         for(ITextRenderer r : renderers) {
