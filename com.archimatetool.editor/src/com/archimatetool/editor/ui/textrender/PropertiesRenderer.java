@@ -9,6 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.archimatetool.model.IArchimateModelObject;
+import com.archimatetool.model.IDiagramModelComponent;
 import com.archimatetool.model.IProperties;
 import com.archimatetool.model.IProperty;
 
@@ -27,28 +28,62 @@ public class PropertiesRenderer implements ITextRenderer {
 
     @Override
     public String render(IArchimateModelObject object, String text) {
-        object = getReferencedObject(object);
-        
-        if(object instanceof IProperties) {
-            text = renderPropertyValue((IProperties)object, text);
-            text = renderPropertiesList((IProperties)object, text);
-            text = renderPropertiesValues((IProperties)object, text);
+        IArchimateModelObject refObject = getReferencedObject(object);
+        if(refObject instanceof IProperties) {
+            text = renderPropertyValue(object, text);
+            text = renderPropertiesList((IProperties)refObject, text);
+            text = renderPropertiesValues((IProperties)refObject, text);
         }
         
         return text;
     }
     
-    private String renderPropertyValue(IProperties object, String text) {
-        // Get Property Value from its key
+    private String renderPropertyValue(IArchimateModelObject object, String text) {
         Matcher matcher = PROPERTY_VALUE.matcher(text);
         
         while(matcher.find()) {
             String key = matcher.group(1);
-            String propertyValue = getPropertyValue(object, key);
+            
+            String propertyValue = "";
+
+            // Get property value from model
+            if(key.startsWith("model:")) {
+                propertyValue = getReferencedPropertyValue(object.getArchimateModel(), key, "model:");
+            }
+            // Get property value from parent view
+            else if(key.startsWith("view:") && object instanceof IDiagramModelComponent) {
+                propertyValue = getReferencedPropertyValue(((IDiagramModelComponent)object).getDiagramModel(), key, "view:");
+            }
+            // Get property value from this object
+            else {
+                propertyValue = getPropertyValue((IProperties)getReferencedObject(object), key);
+            }
+            
             text = text.replace(matcher.group(), propertyValue);
         }
         
         return text;
+    }
+    
+    /**
+     * @param refPropertiesObject The Referenced Properties Object, such as the model or parent view
+     * @param key The Properties Key
+     * @param prefix The prefix reference like "model:" or "view:"
+     * @return The referenced property value
+     * 
+     * Examples:
+     * 
+     * Get property value from model
+     * ${property:model:lang} Get the value of the property key "lang" in the model
+     * 
+     * Get property from parent view
+     * ${property:model:view} Get the value of the property key "lang" in the view
+     */
+    private String getReferencedPropertyValue(IProperties refPropertiesObject, String key, String prefix) {
+        // Strip the prefix and get the actual key
+        key = key.substring(prefix.length());
+        // The properties object is the referenced properties object
+        return getPropertyValue(refPropertiesObject, key);
     }
     
     // List all properties like key: value
