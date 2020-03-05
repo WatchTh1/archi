@@ -33,6 +33,8 @@ public interface IPreferenceConstants {
     
     String DEFAULT_VIEW_FONT = "defaultViewFont";
     String MULTI_LINE_TEXT_FONT = "multiLineTextFont";
+    String MODEL_TREE_FONT = "modelTreeFont";
+    String NAVIGATOR_TREE_FONT = "navigatorTreeFont";
     
     String LINK_VIEW = "linkView";
     
