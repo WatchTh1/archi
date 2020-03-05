@@ -27,12 +27,14 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FontDialog;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Shell;
 
 import com.archimatetool.editor.ui.FontFactory;
 import com.archimatetool.editor.ui.IArchiImages;
@@ -240,12 +242,11 @@ public class FontsPreferenceTab implements IPreferenceConstants {
         fontPreviewGroup.setText(Messages.FontsPreferenceTab_8);
         fontPreviewGroup.setLayout(new GridLayout());
         gd = new GridData(GridData.FILL_HORIZONTAL);
-        gd.heightHint = 80;
         gd.horizontalSpan = 2;
         fontPreviewGroup.setLayoutData(gd);
         
         fFontPreviewLabel = new CLabel(fontPreviewGroup, SWT.NONE);
-        fFontPreviewLabel.setLayoutData(new GridData(GridData.FILL_BOTH));
+        fFontPreviewLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
         // View object default font
         fontInfos.add(new FontInfo(Messages.FontsPreferenceTab_1, FontFactory.getDefaultUserViewFontData()) {
@@ -294,8 +295,11 @@ public class FontsPreferenceTab implements IPreferenceConstants {
         disposeLabelFont();
         fFontPreviewLabel.setData(font);
         
+        GC gc = new GC(new Shell());
+        gc.setFont(font);
+        ((GridData)fFontPreviewLabel.getLayoutData()).heightHint = gc.getFontMetrics().getHeight();
+        gc.dispose();
         fFontPreviewLabel.getParent().getParent().layout();
-        fFontPreviewLabel.getParent().getParent().redraw();
     }
 
     public void performDefaults() {
