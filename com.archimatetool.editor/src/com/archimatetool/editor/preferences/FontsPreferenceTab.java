@@ -258,6 +258,9 @@ public class FontsPreferenceTab implements IPreferenceConstants {
             }
         });
         
+        // Single  text control font
+        fontInfos.add(new FontInfo(Messages.FontsPreferenceTab_10, SINGLE_LINE_TEXT_FONT));
+        
         // Multiline text control font
         fontInfos.add(new FontInfo(Messages.FontsPreferenceTab_4, MULTI_LINE_TEXT_FONT));
         

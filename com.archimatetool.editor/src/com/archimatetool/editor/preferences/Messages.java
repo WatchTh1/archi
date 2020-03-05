@@ -203,6 +203,8 @@ public class Messages extends NLS {
 
     public static String FontsPreferenceTab_1;
 
+    public static String FontsPreferenceTab_10;
+
     public static String FontsPreferenceTab_2;
 
     public static String FontsPreferenceTab_3;

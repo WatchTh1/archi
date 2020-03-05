@@ -16,15 +16,13 @@ import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 import com.archimatetool.editor.preferences.IPreferenceConstants;
 import com.archimatetool.editor.preferences.Preferences;
 import com.archimatetool.editor.ui.ArchiLabelProvider;
-import com.archimatetool.editor.ui.FontFactory;
-import com.archimatetool.editor.utils.StringUtils;
+import com.archimatetool.editor.ui.UIUtils;
 import com.archimatetool.model.IArchimateElement;
 import com.archimatetool.model.IArchimateRelationship;
 
@@ -47,7 +45,7 @@ public class NavigatorViewer extends TreeViewer {
         @Override
         public void propertyChange(PropertyChangeEvent event) {
             if(event.getProperty() == IPreferenceConstants.NAVIGATOR_TREE_FONT) {
-                setTreeFont();
+                UIUtils.setFontFromPreferences(getTree(), IPreferenceConstants.NAVIGATOR_TREE_FONT, false);
                 refresh();
             }
         }
@@ -57,7 +55,7 @@ public class NavigatorViewer extends TreeViewer {
     public NavigatorViewer(Composite parent, int style) {
         super(parent, style | SWT.MULTI);
         
-        setTreeFont();
+        UIUtils.setFontFromPreferences(getTree(), IPreferenceConstants.NAVIGATOR_TREE_FONT, false);
         
         setContentProvider(new NavigatorViewerContentProvider());
         setLabelProvider(new NavigatorViewerLabelProvider());
@@ -94,18 +92,6 @@ public class NavigatorViewer extends TreeViewer {
             expandToLevel(3);
         }
     }
-    
-    private void setTreeFont() {
-        String fontDetails = Preferences.STORE.getString(IPreferenceConstants.NAVIGATOR_TREE_FONT);
-        if(StringUtils.isSet(fontDetails)) {
-            Font font = FontFactory.get(fontDetails);
-            getTree().setFont(font);
-        }
-        else {
-            getTree().setFont(null);
-        }
-    }
-
     
     /**
      *  Content Provider

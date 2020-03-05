@@ -47,6 +47,7 @@ implements IPreferenceConstants {
         store.setDefault(MULTI_LINE_TEXT_FONT, "");
         store.setDefault(MODEL_TREE_FONT, "");
         store.setDefault(NAVIGATOR_TREE_FONT, "");
+        store.setDefault(SINGLE_LINE_TEXT_FONT, "");
         
         store.setDefault(LINK_VIEW, false);
         

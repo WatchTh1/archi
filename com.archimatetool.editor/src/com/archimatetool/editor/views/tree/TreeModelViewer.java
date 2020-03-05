@@ -40,8 +40,8 @@ import com.archimatetool.editor.preferences.IPreferenceConstants;
 import com.archimatetool.editor.preferences.Preferences;
 import com.archimatetool.editor.ui.ArchiLabelProvider;
 import com.archimatetool.editor.ui.FontFactory;
+import com.archimatetool.editor.ui.UIUtils;
 import com.archimatetool.editor.ui.components.TreeTextCellEditor;
-import com.archimatetool.editor.utils.StringUtils;
 import com.archimatetool.editor.views.tree.commands.RenameCommandHandler;
 import com.archimatetool.editor.views.tree.search.SearchFilter;
 import com.archimatetool.model.FolderType;
@@ -274,15 +274,7 @@ public class TreeModelViewer extends TreeViewer {
     }
     
     private void setTreeFonts() {
-        String fontDetails = Preferences.STORE.getString(IPreferenceConstants.MODEL_TREE_FONT);
-        if(StringUtils.isSet(fontDetails)) {
-            Font font = FontFactory.get(fontDetails);
-            getTree().setFont(font);
-        }
-        else {
-            getTree().setFont(null);
-        }
-        
+        UIUtils.setFontFromPreferences(getTree(), IPreferenceConstants.MODEL_TREE_FONT, false);
         fontItalic = FontFactory.getItalic(getTree().getFont());
         fontBold = FontFactory.getBold(getTree().getFont());
     }
