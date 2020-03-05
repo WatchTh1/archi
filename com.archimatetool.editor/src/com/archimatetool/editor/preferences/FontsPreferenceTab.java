@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -113,8 +114,7 @@ public class FontsPreferenceTab implements IPreferenceConstants {
         });
         
         fTableViewer = new TableViewer(client);
-        GridData gd = new GridData(GridData.FILL_BOTH);
-        fTableViewer.getControl().setLayoutData(gd);
+        GridDataFactory.create(GridData.FILL_BOTH).applyTo(fTableViewer.getControl());
         
         // Table Double-click listener
         fTableViewer.addDoubleClickListener(new IDoubleClickListener() {
@@ -192,14 +192,13 @@ public class FontsPreferenceTab implements IPreferenceConstants {
         
         // Buttons
         Composite buttonClient = new Composite(client, SWT.NULL);
-        gd = new GridData(SWT.TOP, SWT.TOP, false, false);
-        buttonClient.setLayoutData(gd);
+        GridDataFactory.swtDefaults().align(SWT.CENTER, SWT.TOP).applyTo(buttonClient);
         buttonClient.setLayout(new GridLayout());
 
         // Edit...
         fEditFontButton = new Button(buttonClient, SWT.PUSH);
         fEditFontButton.setText(Messages.FontsPreferenceTab_2);
-        fEditFontButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(fEditFontButton);
         fEditFontButton.setEnabled(false);
         fEditFontButton.addSelectionListener(new SelectionAdapter() {
             @Override
@@ -221,7 +220,7 @@ public class FontsPreferenceTab implements IPreferenceConstants {
         // Default
         fDefaultFontButton = new Button(buttonClient, SWT.PUSH);
         fDefaultFontButton.setText(Messages.FontsPreferenceTab_7);
-        fDefaultFontButton.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(fDefaultFontButton);
         fDefaultFontButton.setEnabled(false);
         fDefaultFontButton.addSelectionListener(new SelectionAdapter() {
             @Override
@@ -241,12 +240,10 @@ public class FontsPreferenceTab implements IPreferenceConstants {
         Group fontPreviewGroup = new Group(client, SWT.NULL);
         fontPreviewGroup.setText(Messages.FontsPreferenceTab_8);
         fontPreviewGroup.setLayout(new GridLayout());
-        gd = new GridData(GridData.FILL_HORIZONTAL);
-        gd.horizontalSpan = 2;
-        fontPreviewGroup.setLayoutData(gd);
+        GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(fontPreviewGroup);
         
         fFontPreviewLabel = new CLabel(fontPreviewGroup, SWT.NONE);
-        fFontPreviewLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(fFontPreviewLabel);
 
         // View object default font
         fontInfos.add(new FontInfo(Messages.FontsPreferenceTab_1, FontFactory.getDefaultUserViewFontData()) {
